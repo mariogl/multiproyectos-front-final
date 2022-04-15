@@ -1,4 +1,4 @@
-import LoadChallengesAction from "../../types/actions";
+import { LoadChallengesAction } from "../../types/actions";
 import Challenge from "../../types/challenges";
 import actionTypes from "./actionTypes";
 import loadChallengesAction from "./challengesActionCreators";

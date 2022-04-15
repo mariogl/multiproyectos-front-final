@@ -1,8 +1,10 @@
 import Challenge from "./challenges";
 
-interface LoadChallengesAction {
+export interface Action {
+  type: string;
+}
+
+export interface LoadChallengesAction {
   type: string;
   challenges: Challenge[];
 }
-
-export default LoadChallengesAction;
