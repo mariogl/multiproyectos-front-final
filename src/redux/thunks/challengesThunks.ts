@@ -7,7 +7,10 @@ import loadChallengesAction from "../actions/challengesActionCreators";
 export const loadChallengesThunk =
   () => async (dispatch: Dispatch<LoadChallengesAction>) => {
     const apiUrl = process.env.REACT_APP_API_URL as string;
-    const { data } = await axios.get<Challenge[]>(apiUrl);
-
-    dispatch(loadChallengesAction(data));
+    const { data } = await axios.get<{ challenges: Challenge[] }>(apiUrl, {
+      headers: {
+        authorization: `Bearer ${process.env.REACT_APP_TEMP_JWT}`,
+      },
+    });
+    dispatch(loadChallengesAction(data.challenges));
   };
