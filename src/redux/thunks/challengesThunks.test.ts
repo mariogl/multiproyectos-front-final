@@ -1,5 +1,5 @@
 import axios from "axios";
-import { randomChallenges } from "../../mocks/challenges";
+import { randomChallenges } from "../../factories/challenge";
 import Challenge from "../../types/challenges";
 import { loadChallengesThunk } from "./challengesThunks";
 

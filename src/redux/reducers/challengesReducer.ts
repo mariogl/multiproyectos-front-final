@@ -9,7 +9,7 @@ const challengesReducer = (
   let newChallenges: Challenge[];
 
   switch (action.type) {
-    case actionTypes.load:
+    case actionTypes.loadChallenges:
       newChallenges = [...(action as LoadChallengesAction).challenges];
       break;
     default:

@@ -1,10 +1,14 @@
 import Challenge from "./challenges";
+import Project from "./project";
 
 export interface Action {
   type: string;
 }
 
-export interface LoadChallengesAction {
-  type: string;
+export interface LoadChallengesAction extends Action {
   challenges: Challenge[];
+}
+
+export interface LoadProjectsAction extends Action {
+  projects: Project[];
 }

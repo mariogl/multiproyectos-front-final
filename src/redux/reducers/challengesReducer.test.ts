@@ -1,4 +1,4 @@
-import { randomChallenges } from "../../mocks/challenges";
+import { randomChallenges } from "../../factories/challenge";
 import { Action, LoadChallengesAction } from "../../types/actions";
 import Challenge from "../../types/challenges";
 import actionTypes from "../actions/actionTypes";
@@ -10,7 +10,7 @@ describe("Given a challengesReducer function", () => {
       const initialChallenges: Challenge[] = [];
       const newChallenges: Challenge[] = randomChallenges();
       const action: LoadChallengesAction = {
-        type: actionTypes.load,
+        type: actionTypes.loadChallenges,
         challenges: newChallenges,
       };
 

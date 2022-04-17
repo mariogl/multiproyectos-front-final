@@ -20,7 +20,7 @@ describe("Given a loadChallengesAction function", () => {
       ];
 
       const expectedAction: LoadChallengesAction = {
-        type: actionTypes.load,
+        type: actionTypes.loadChallenges,
         challenges,
       };
 
