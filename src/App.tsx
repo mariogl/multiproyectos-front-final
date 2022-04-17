@@ -1,3 +1,4 @@
+import ChallengesList from "./components/ChallengesList/ChallengesList";
 import Navigation from "./components/Navigation/Navigation";
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
       </header>
       <main>
         <h2>Listado</h2>
+        <ChallengesList />
       </main>
     </>
   );
