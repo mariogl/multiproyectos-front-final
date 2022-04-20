@@ -16,6 +16,10 @@ interface Project {
     front: string;
     back: string;
   };
+  prod: {
+    front: string;
+    back: string;
+  };
 }
 
 export default Project;

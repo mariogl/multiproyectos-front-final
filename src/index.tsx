@@ -3,8 +3,13 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import TimeAgo from "javascript-time-ago";
+import es from "javascript-time-ago/locale/es.json";
 import store from "./redux/store";
 import { Provider } from "react-redux";
+
+TimeAgo.addDefaultLocale(es);
 
 const container = document.getElementById("root");
 const root = createRoot(container as HTMLElement);

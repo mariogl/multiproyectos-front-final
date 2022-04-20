@@ -16,6 +16,10 @@ describe("Given a loadProjectsAction function", () => {
             back: "",
             front: "",
           },
+          prod: {
+            back: "",
+            front: "",
+          },
           sonarqubeKey: {
             front: "",
             back: "",
@@ -29,6 +33,10 @@ describe("Given a loadProjectsAction function", () => {
           challenge: "w1ch1",
           student: "Student 2",
           repo: {
+            back: "",
+            front: "",
+          },
+          prod: {
             back: "",
             front: "",
           },

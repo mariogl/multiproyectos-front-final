@@ -17,6 +17,10 @@ const getProject = (blank = false): Project => ({
     back: blank ? "" : faker.internet.url(),
     front: blank ? "" : faker.internet.url(),
   },
+  prod: {
+    back: blank ? "" : faker.internet.url(),
+    front: blank ? "" : faker.internet.url(),
+  },
   tutor: {
     id: blank ? "" : mongoid(),
     name: blank ? "" : faker.name.findName(),
