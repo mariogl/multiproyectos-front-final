@@ -19,7 +19,7 @@ const ChallengesList = (): JSX.Element => {
     <ul>
       {challenges.map((challenge: Challenge) => (
         <li key={challenge.id}>
-          <Link to={`projects/by-challenge/${challenge.id}`}>
+          <Link to={`/projects/by-challenge/${challenge.id}`}>
             {challenge.name.toUpperCase()}
           </Link>
         </li>

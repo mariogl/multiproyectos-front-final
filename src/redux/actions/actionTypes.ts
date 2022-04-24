@@ -1,5 +1,6 @@
 const actionTypes = {
-  load: "load-items",
+  loadChallenges: "load-challenges",
+  loadProjects: "load-projects",
 };
 
 export default actionTypes;
