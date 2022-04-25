@@ -35,7 +35,7 @@ const ProjectCard = ({
   const [infoRepoBack, setInfoRepoBack] = useState<any>(null);
   const [infoSonarFront, setInfoSonarFront] = useState<any>(null);
   const [infoSonarBack, setInfoSonarBack] = useState<any>(null);
-  const [showFrontProdPreview, setShowFrontProdPreview] = useState(false);
+  const [showFrontProdPreview, setShowFrontProdPreview] = useState(true);
   const [validation, setValidation] = useState("ok");
 
   const [repoFrontOwner, repoFrontName] = repo.front
@@ -149,10 +149,7 @@ const ProjectCard = ({
           <StyledSide>
             Front{" "}
             <a href={prod.front} target="_blank" rel="noreferrer">
-              <UrlIcon
-                onMouseOver={() => setShowFrontProdPreview(true)}
-                onMouseOut={() => setShowFrontProdPreview(false)}
-              />
+              <UrlIcon />
             </a>{" "}
             <a href={repo.front} target="_blank" rel="noreferrer">
               <GithubLogo />
