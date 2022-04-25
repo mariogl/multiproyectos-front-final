@@ -13,6 +13,7 @@ import {
   StyledTitle,
   StyledTutor,
 } from "./ProjectCardStyled";
+import ProdPreview from "../ProdPreview/ProdPreview";
 
 interface ProjectCardProps {
   project: Project;
@@ -32,6 +33,7 @@ const ProjectCard = ({
   const [infoRepoBack, setInfoRepoBack] = useState<any>(null);
   const [infoSonarFront, setInfoSonarFront] = useState<any>(null);
   const [infoSonarBack, setInfoSonarBack] = useState<any>(null);
+  const [showFrontProdPreview, setShowFrontProdPreview] = useState(false);
 
   const [repoFrontOwner, repoFrontName] = repo.front
     .replace("https://github.com/", "")
@@ -122,7 +124,10 @@ const ProjectCard = ({
           <StyledSide>
             Front{" "}
             <a href={prod.front} target="_blank" rel="noreferrer">
-              <UrlIcon />
+              <UrlIcon
+                onMouseOver={() => setShowFrontProdPreview(true)}
+                onMouseOut={() => setShowFrontProdPreview(false)}
+              />
             </a>{" "}
             <a href={repo.front} target="_blank" rel="noreferrer">
               <GithubLogo />
@@ -213,6 +218,7 @@ const ProjectCard = ({
         </StyledLogo>
       )}
       {tutor && <StyledTutor>{tutor.name.charAt(0).toUpperCase()}</StyledTutor>}
+      {showFrontProdPreview && <ProdPreview url={prod.front} />}
     </StyledArticle>
   );
 };
