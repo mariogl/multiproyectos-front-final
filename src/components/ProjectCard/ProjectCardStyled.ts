@@ -23,6 +23,14 @@ export const StyledArticle = styled.article<{
     height: 20px;
     width: auto;
   }
+  .validation-errors {
+    color: red;
+    font-weight: bold;
+  }
+  .validation-warnings {
+    color: yellow;
+    font-weight: bold;
+  }
 `;
 
 export const StyledStudent = styled.span`
