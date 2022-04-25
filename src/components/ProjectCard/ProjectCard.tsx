@@ -4,6 +4,7 @@ import Project from "../../types/project";
 import trelloLogo from "../../img/trello.svg";
 import { ReactComponent as GithubLogo } from "../../img/github-icon.svg";
 import { ReactComponent as UrlIcon } from "../../img/url.svg";
+import { ReactComponent as W3CIcon } from "../../img/w3c-icon.svg";
 import { Octokit } from "@octokit/rest";
 import {
   StyledArticle,
@@ -14,6 +15,7 @@ import {
   StyledTutor,
 } from "./ProjectCardStyled";
 import ProdPreview from "../ProdPreview/ProdPreview";
+import axios from "axios";
 
 interface ProjectCardProps {
   project: Project;
@@ -34,6 +36,7 @@ const ProjectCard = ({
   const [infoSonarFront, setInfoSonarFront] = useState<any>(null);
   const [infoSonarBack, setInfoSonarBack] = useState<any>(null);
   const [showFrontProdPreview, setShowFrontProdPreview] = useState(false);
+  const [validation, setValidation] = useState("ok");
 
   const [repoFrontOwner, repoFrontName] = repo.front
     .replace("https://github.com/", "")
@@ -111,9 +114,31 @@ const ProjectCard = ({
     repoFrontOwner,
   ]);
 
+  const getValidation = useCallback(async () => {
+    interface Data {
+      messages: any[];
+    }
+
+    const {
+      data: { messages },
+    } = await axios.get<Data>(
+      `https://validator.w3.org/nu/?doc=${prod.front}&out=json`
+    );
+    const errors = messages.filter((message) => message.type === "error");
+    const warnings = messages.filter((message) => message.type === "info");
+    if (errors.length > 0) {
+      setValidation("errors");
+    } else if (warnings.length > 0) {
+      setValidation("warnings");
+    } else {
+      setValidation("ok");
+    }
+  }, [prod.front]);
+
   useEffect(() => {
     getInfoRepo();
-  }, [getInfoRepo]);
+    getValidation();
+  }, [getInfoRepo, getValidation]);
 
   return (
     <StyledArticle backgroundColor={backgroundColor}>
@@ -167,6 +192,23 @@ const ProjectCard = ({
                   />
                 </a>
               )}
+          </p>
+          <p>
+            HTML validation:{" "}
+            <a
+              href={`https://validator.w3.org/nu/?doc=${prod.front}`}
+              target="_blank"
+              rel="noreferrer"
+              className={
+                validation === "errors"
+                  ? "validation-errors"
+                  : validation === "warnings"
+                  ? "validation-warnings"
+                  : ""
+              }
+            >
+              {validation}
+            </a>
           </p>
           {infoSonarFront && (
             <>
