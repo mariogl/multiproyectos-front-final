@@ -1,4 +1,8 @@
-import { FilterProjectsAction, LoadProjectsAction } from "../../types/actions";
+import {
+  DeleteProjectAction,
+  FilterProjectsAction,
+  LoadProjectsAction,
+} from "../../types/actions";
 import Project from "../../types/project";
 import actionTypes from "./actionTypes";
 
@@ -14,4 +18,7 @@ export const filterProjectsAction = (filter = ""): FilterProjectsAction => ({
   filter,
 });
 
-export default loadProjectsAction;
+export const deleteProjectAction = (id: string): DeleteProjectAction => ({
+  type: actionTypes.delete,
+  id,
+});

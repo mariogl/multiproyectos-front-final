@@ -16,3 +16,7 @@ export interface LoadProjectsAction extends Action {
 export interface FilterProjectsAction extends Action {
   filter: string;
 }
+
+export interface DeleteProjectAction extends Action {
+  id: string;
+}
