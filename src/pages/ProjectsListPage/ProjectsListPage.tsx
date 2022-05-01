@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import ProjectsList from "../../components/ProjectsList/ProjectsList";
+import TutorsNavigation from "../../components/TutorsNavigation/TutorsNavigation";
 import { RootState } from "../../redux/reducers";
 import { ProjectsState } from "../../redux/reducers/projectsReducer";
 import { loadProjectsThunk } from "../../redux/thunks/projectsThunks";
@@ -44,7 +45,7 @@ const ProjectsListPage = (): JSX.Element => {
   return (
     <>
       <StyledBar>
-        {/* <Toolbar ids={projects.map((project) => project.id)} /> */}
+        <TutorsNavigation />
       </StyledBar>
       <ProjectsList projects={projects} />
     </>

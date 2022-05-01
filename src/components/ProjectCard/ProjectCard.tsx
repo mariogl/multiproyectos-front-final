@@ -28,6 +28,7 @@ const octokit = new Octokit({ auth: process.env.REACT_APP_GITHUB_TOKEN });
 
 const ProjectCard = ({
   project: { id, name, repo, prod, tutor, student, trello, sonarqubeKey },
+  project,
   backgroundColor,
 }: ProjectCardProps): JSX.Element => {
   const [infoRepoFront, setInfoRepoFront] = useState<any>(null);
@@ -261,7 +262,11 @@ const ProjectCard = ({
           )}
         </>
       )}
-      {tutor && <StyledTutor>{tutor.name.charAt(0).toUpperCase()}</StyledTutor>}
+      {tutor && (
+        <StyledTutor backgroundColor={backgroundColor} title={tutor.name}>
+          {tutor.name.charAt(0).toUpperCase()}
+        </StyledTutor>
+      )}
       {prod.front && <ProdPreview url={prod.front} />}
       {trello && (
         <StyledLogo>

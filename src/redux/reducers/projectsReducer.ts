@@ -1,4 +1,8 @@
-import { Action, LoadProjectsAction } from "../../types/actions";
+import {
+  Action,
+  FilterProjectsAction,
+  LoadProjectsAction,
+} from "../../types/actions";
 import Project from "../../types/project";
 import actionTypes from "../actions/actionTypes";
 
@@ -21,6 +25,12 @@ const projectsReducer = (
       newProjects = {
         ...projects,
         list: [...(action as LoadProjectsAction).projects],
+      };
+      break;
+    case actionTypes.filter:
+      newProjects = {
+        ...projects,
+        filterBy: (action as FilterProjectsAction).filter,
       };
       break;
     default:

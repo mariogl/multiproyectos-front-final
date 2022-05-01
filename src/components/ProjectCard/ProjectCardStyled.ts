@@ -49,11 +49,14 @@ export const StyledSide = styled.h4`
   font-size: 1.2em;
 `;
 
-export const StyledTutor = styled.span`
+export const StyledTutor = styled.span<{
+  backgroundColor: { color: string; theme: string };
+}>`
   position: absolute;
   right: 10px;
   top: 10px;
-  border: 1px solid #fff;
+  border: 1px solid
+    ${(props) => (props.backgroundColor.theme === "dark" ? "#fff" : "#000")};
   border-radius: 50%;
   display: inline-block;
   width: 20px;
@@ -62,6 +65,6 @@ export const StyledTutor = styled.span`
 
 export const StyledLogo = styled.span`
   position: absolute;
-  right: 10px;
+  right: 40px;
   top: 10px;
 `;
