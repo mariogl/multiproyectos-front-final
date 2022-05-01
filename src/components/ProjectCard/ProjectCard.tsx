@@ -135,8 +135,10 @@ const ProjectCard = ({
 
   useEffect(() => {
     getInfoRepo();
-    getValidation();
-  }, [getInfoRepo, getValidation]);
+    if (prod.front) {
+      getValidation();
+    }
+  }, [getInfoRepo, getValidation, prod.front]);
 
   return (
     <StyledArticle backgroundColor={backgroundColor}>
