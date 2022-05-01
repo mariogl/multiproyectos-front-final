@@ -63,5 +63,5 @@ export const StyledTutor = styled.span`
 export const StyledLogo = styled.span`
   position: absolute;
   right: 10px;
-  top: 40px;
+  top: 10px;
 `;

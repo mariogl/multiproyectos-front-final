@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import ReactTimeAgo from "react-time-ago";
 import Project from "../../types/project";
-import trelloLogo from "../../img/trello.svg";
+import { ReactComponent as TrelloLogo } from "../../img/trello-icon.svg";
 import { ReactComponent as GithubLogo } from "../../img/github-icon.svg";
 import { ReactComponent as UrlIcon } from "../../img/url.svg";
-import { ReactComponent as W3CIcon } from "../../img/w3c-icon.svg";
 import { Octokit } from "@octokit/rest";
 import {
   StyledArticle,
@@ -33,9 +32,8 @@ const ProjectCard = ({
 }: ProjectCardProps): JSX.Element => {
   const [infoRepoFront, setInfoRepoFront] = useState<any>(null);
   const [infoRepoBack, setInfoRepoBack] = useState<any>(null);
-  const [infoSonarFront, setInfoSonarFront] = useState<any>(null);
-  const [infoSonarBack, setInfoSonarBack] = useState<any>(null);
-  const [showFrontProdPreview, setShowFrontProdPreview] = useState(true);
+  const [infoSonarFront] = useState<any>(null);
+  const [infoSonarBack] = useState<any>(null);
   const [validation, setValidation] = useState("ok");
 
   const [repoFrontOwner, repoFrontName] = repo.front
@@ -45,6 +43,8 @@ const ProjectCard = ({
   const [repoBackOwner, repoBackName] = repo.back
     .replace("https://github.com/", "")
     .split("/");
+
+  const validationURL = `https://validator.w3.org/nu/?doc=${prod.front}`;
 
   const getInfoRepo = useCallback(async () => {
     const lastCommitFrontPromise = repo.front
@@ -121,9 +121,7 @@ const ProjectCard = ({
 
     const {
       data: { messages },
-    } = await axios.get<Data>(
-      `https://validator.w3.org/nu/?doc=${prod.front}&out=json`
-    );
+    } = await axios.get<Data>(`${validationURL}&out=json`);
     const errors = messages.filter((message) => message.type === "error");
     const warnings = messages.filter((message) => message.type === "info");
     if (errors.length > 0) {
@@ -133,7 +131,7 @@ const ProjectCard = ({
     } else {
       setValidation("ok");
     }
-  }, [prod.front]);
+  }, [validationURL]);
 
   useEffect(() => {
     getInfoRepo();
@@ -148,10 +146,20 @@ const ProjectCard = ({
         <>
           <StyledSide>
             Front{" "}
-            <a href={prod.front} target="_blank" rel="noreferrer">
+            <a
+              href={prod.front}
+              target="_blank"
+              rel="noreferrer"
+              title="Producción"
+            >
               <UrlIcon />
             </a>{" "}
-            <a href={repo.front} target="_blank" rel="noreferrer">
+            <a
+              href={repo.front}
+              target="_blank"
+              rel="noreferrer"
+              title="GitHub"
+            >
               <GithubLogo />
             </a>
           </StyledSide>
@@ -190,23 +198,25 @@ const ProjectCard = ({
                 </a>
               )}
           </p>
-          <p>
-            HTML validation:{" "}
-            <a
-              href={`https://validator.w3.org/nu/?doc=${prod.front}`}
-              target="_blank"
-              rel="noreferrer"
-              className={
-                validation === "errors"
-                  ? "validation-errors"
-                  : validation === "warnings"
-                  ? "validation-warnings"
-                  : ""
-              }
-            >
-              {validation}
-            </a>
-          </p>
+          {prod.front && (
+            <p>
+              HTML validation:{" "}
+              <a
+                href={validationURL}
+                target="_blank"
+                rel="noreferrer"
+                className={
+                  validation === "errors"
+                    ? "validation-errors"
+                    : validation === "warnings"
+                    ? "validation-warnings"
+                    : ""
+                }
+              >
+                {validation}
+              </a>
+            </p>
+          )}
           {infoSonarFront && (
             <>
               <p>Code smells: {infoSonarFront.codeSmells}</p>
@@ -249,15 +259,15 @@ const ProjectCard = ({
           )}
         </>
       )}
+      {tutor && <StyledTutor>{tutor.name.charAt(0).toUpperCase()}</StyledTutor>}
+      {prod.front && <ProdPreview url={prod.front} />}
       {trello && (
         <StyledLogo>
-          <a href={trello} target="_blank" rel="noreferrer">
-            <img src={trelloLogo} alt="Trello" height="20" />
+          <a href={trello} target="_blank" rel="noreferrer" title="Trello">
+            <TrelloLogo />
           </a>
         </StyledLogo>
       )}
-      {tutor && <StyledTutor>{tutor.name.charAt(0).toUpperCase()}</StyledTutor>}
-      {showFrontProdPreview && <ProdPreview url={prod.front} />}
     </StyledArticle>
   );
 };
