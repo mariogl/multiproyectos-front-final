@@ -4,7 +4,7 @@ interface Project {
   name: string;
   student: string;
   trello: string;
-  sonarqubeKey: {
+  sonarKey: {
     front: string;
     back: string;
   };

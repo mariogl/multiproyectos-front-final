@@ -27,8 +27,7 @@ interface ProjectCardProps {
 const octokit = new Octokit({ auth: process.env.REACT_APP_GITHUB_TOKEN });
 
 const ProjectCard = ({
-  project: { id, name, repo, prod, tutor, student, trello, sonarqubeKey },
-  project,
+  project: { name, repo, prod, tutor, student, trello, sonarKey },
   backgroundColor,
 }: ProjectCardProps): JSX.Element => {
   const [infoRepoFront, setInfoRepoFront] = useState<any>(null);
@@ -46,6 +45,12 @@ const ProjectCard = ({
     .split("/");
 
   const validationURL = `https://validator.w3.org/nu/?doc=${prod.front}`;
+  const sonarApiURL =
+    sonarKey?.front &&
+    `https://sonarcloud.io/api/project_badges/measure?project=${sonarKey.front}`;
+  const sonarURL =
+    sonarKey?.front &&
+    `https://sonarcloud.io/project/overview?id=${sonarKey.front}`;
 
   const getInfoRepo = useCallback(async () => {
     const lastCommitFrontPromise = repo.front
@@ -230,7 +235,6 @@ const ProjectCard = ({
           )}
         </>
       )}
-
       {repo?.back && (
         <>
           <StyledSide>
@@ -274,6 +278,11 @@ const ProjectCard = ({
             <TrelloLogo />
           </a>
         </StyledLogo>
+      )}
+      {sonarKey?.front && (
+        <a href={sonarURL} target="_blank" rel="noreferrer">
+          <img src={`${sonarApiURL}&metric=alert_status`} alt="Sonar" />
+        </a>
       )}
     </StyledArticle>
   );

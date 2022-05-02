@@ -9,7 +9,7 @@ const getProject = (blank = false): Project => ({
   name: blank ? "" : faker.name.findName(),
   student: blank ? "" : faker.name.firstName(),
   trello: blank ? "" : faker.internet.url(),
-  sonarqubeKey: {
+  sonarKey: {
     front: blank ? "" : faker.name.firstName(),
     back: blank ? "" : faker.name.firstName(),
   },

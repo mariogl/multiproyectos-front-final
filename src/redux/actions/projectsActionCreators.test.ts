@@ -20,7 +20,7 @@ describe("Given a loadProjectsAction function", () => {
             back: "",
             front: "",
           },
-          sonarqubeKey: {
+          sonarKey: {
             front: "",
             back: "",
           },
@@ -40,7 +40,7 @@ describe("Given a loadProjectsAction function", () => {
             back: "",
             front: "",
           },
-          sonarqubeKey: {
+          sonarKey: {
             front: "",
             back: "",
           },
