@@ -46,7 +46,7 @@ const ProjectsList = ({ projects }: ProjectsListProps): JSX.Element => {
   return (
     <>
       <p>{projects.length} proyectos</p>
-      <Row as="ul" className="list-unstyled">
+      <Row as="ul" className="projects-list list-unstyled">
         {projects.map((project: Project, i: number) => (
           <Col
             as="li"

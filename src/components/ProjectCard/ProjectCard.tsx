@@ -4,7 +4,6 @@ import Project from "../../types/project";
 import { ReactComponent as TrelloLogo } from "../../img/trello-icon.svg";
 import { ReactComponent as GithubLogo } from "../../img/github-icon.svg";
 import { ReactComponent as UrlIcon } from "../../img/url.svg";
-import { Octokit } from "@octokit/rest";
 import {
   StyledArticle,
   StyledLogo,
@@ -15,6 +14,7 @@ import {
 } from "./ProjectCardStyled";
 import ProdPreview from "../ProdPreview/ProdPreview";
 import axios from "axios";
+import useGitHub from "../../hooks/useGitHub";
 
 interface ProjectCardProps {
   project: Project;
@@ -24,25 +24,13 @@ interface ProjectCardProps {
   };
 }
 
-const octokit = new Octokit({ auth: process.env.REACT_APP_GITHUB_TOKEN });
-
 const ProjectCard = ({
   project: { name, repo, prod, tutor, student, trello, sonarKey },
   backgroundColor,
 }: ProjectCardProps): JSX.Element => {
-  const [infoRepoFront, setInfoRepoFront] = useState<any>(null);
-  const [infoRepoBack, setInfoRepoBack] = useState<any>(null);
   const [infoSonarFront] = useState<any>(null);
   const [infoSonarBack] = useState<any>(null);
   const [validation, setValidation] = useState("ok");
-
-  const [repoFrontOwner, repoFrontName] = repo.front
-    .replace("https://github.com/", "")
-    .split("/");
-
-  const [repoBackOwner, repoBackName] = repo.back
-    .replace("https://github.com/", "")
-    .split("/");
 
   const validationURL = `https://validator.w3.org/nu/?doc=${prod.front}`;
   const sonarApiURL =
@@ -52,73 +40,7 @@ const ProjectCard = ({
     sonarKey?.front &&
     `https://sonarcloud.io/project/overview?id=${sonarKey.front}`;
 
-  const getInfoRepo = useCallback(async () => {
-    const lastCommitFrontPromise = repo.front
-      ? octokit.request("GET /repos/{owner}/{repo}/commits", {
-          owner: repoFrontOwner,
-          repo: repoFrontName,
-          per_page: 1,
-        })
-      : { data: [null] };
-
-    const lastCommitBackPromise = repo.back
-      ? octokit.request("GET /repos/{owner}/{repo}/commits", {
-          owner: repoBackOwner,
-          repo: repoBackName,
-          per_page: 1,
-        })
-      : { data: [null] };
-
-    const lastPullRequestFrontPromise = repo.front
-      ? octokit.request("GET /repos/{owner}/{repo}/pulls", {
-          owner: repoFrontOwner,
-          repo: repoFrontName,
-          per_page: 1,
-        })
-      : { data: [null] };
-
-    const lastPullRequestBackPromise = repo.back
-      ? octokit.request("GET /repos/{owner}/{repo}/pulls", {
-          owner: repoBackOwner,
-          repo: repoBackName,
-          per_page: 1,
-        })
-      : { data: [null] };
-
-    const [
-      {
-        data: [repoFront],
-      },
-      {
-        data: [repoBack],
-      },
-      {
-        data: [pullRequestsFront],
-      },
-      {
-        data: [pullRequestsBack],
-      },
-    ] = await Promise.all([
-      lastCommitFrontPromise,
-      lastCommitBackPromise,
-      lastPullRequestFrontPromise,
-      lastPullRequestBackPromise,
-    ]);
-
-    if (repo.front) {
-      setInfoRepoFront({ commits: repoFront, pullRequests: pullRequestsFront });
-    }
-    if (repo.back) {
-      setInfoRepoBack({ commits: repoBack, pullRequests: pullRequestsBack });
-    }
-  }, [
-    repo.back,
-    repo.front,
-    repoBackName,
-    repoBackOwner,
-    repoFrontName,
-    repoFrontOwner,
-  ]);
+  const { infoRepoBack, infoRepoFront, getInfoRepo } = useGitHub(repo);
 
   const getValidation = useCallback(async () => {
     interface Data {
