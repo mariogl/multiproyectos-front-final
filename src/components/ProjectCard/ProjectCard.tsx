@@ -248,6 +248,13 @@ const ProjectCard = ({
           {tutor.name.charAt(0).toUpperCase()}
         </StyledTutor>
       )}
+      {sonarKey?.front && (
+        <p>
+          <a href={sonarURL} target="_blank" rel="noreferrer">
+            <img src={`${sonarBadgetURL}&metric=alert_status`} alt="Sonar" />
+          </a>
+        </p>
+      )}
       {prod.front && previews && <ProdPreview url={prod.front} />}
       {trello && (
         <StyledLogo>
@@ -255,11 +262,6 @@ const ProjectCard = ({
             <TrelloLogo />
           </a>
         </StyledLogo>
-      )}
-      {sonarKey?.front && (
-        <a href={sonarURL} target="_blank" rel="noreferrer">
-          <img src={`${sonarBadgetURL}&metric=alert_status`} alt="Sonar" />
-        </a>
       )}
     </StyledArticle>
   );

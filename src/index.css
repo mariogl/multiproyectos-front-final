@@ -2,6 +2,10 @@
   margin-top: 1.5em;
   margin-bottom: 1.5em;
 }
+.main-header {
+  display: flex;
+  justify-content: space-between;
+}
 .projects-list {
   overflow: hidden;
 }

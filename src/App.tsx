@@ -6,12 +6,11 @@ import ProjectsListPage from "./pages/ProjectsListPage/ProjectsListPage";
 function App() {
   return (
     <>
-      <header>
+      <header className="main-header">
         <h1>Challenges</h1>
         <Navigation />
       </header>
       <main>
-        <h2>Listado</h2>
         <Routes>
           <Route path="/challenges" element={<ChallengesList />} />
           <Route
