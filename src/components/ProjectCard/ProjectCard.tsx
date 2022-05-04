@@ -4,6 +4,7 @@ import Project from "../../types/project";
 import { ReactComponent as TrelloLogo } from "../../img/trello-icon.svg";
 import { ReactComponent as GithubLogo } from "../../img/github-icon.svg";
 import { ReactComponent as UrlIcon } from "../../img/url.svg";
+import { ReactComponent as SonarLogo } from "../../img/sonar-icon.svg";
 import {
   StyledArticle,
   StyledLogo,
@@ -133,6 +134,17 @@ const ProjectCard = ({
             >
               <GithubLogo />
             </a>
+            {sonarKey?.front && (
+              <a
+                href={sonarURL}
+                target="_blank"
+                rel="noreferrer"
+                title="SonarCloud"
+              >
+                {" "}
+                <SonarLogo />
+              </a>
+            )}
           </StyledSide>
           <p>
             Último commit:{" "}

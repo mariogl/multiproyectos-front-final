@@ -22,6 +22,12 @@ export const StyledArticle = styled.article<{
       props.backgroundColor.theme === "dark" ? "#fff" : "#000"};
     height: 20px;
     width: auto;
+    path {
+      fill: ${(props) =>
+        props.backgroundColor.theme === "dark"
+          ? "#fff !important"
+          : "#000 !important"};
+    }
   }
   .validation-errors {
     color: red;
