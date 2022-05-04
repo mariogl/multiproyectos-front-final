@@ -15,6 +15,8 @@ import {
 import ProdPreview from "../ProdPreview/ProdPreview";
 import axios from "axios";
 import useGitHub from "../../hooks/useGitHub";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/reducers";
 
 interface ProjectCardProps {
   project: Project;
@@ -28,12 +30,14 @@ const ProjectCard = ({
   project: { name, repo, prod, tutor, student, trello, sonarKey },
   backgroundColor,
 }: ProjectCardProps): JSX.Element => {
-  const [infoSonarFront] = useState<any>(null);
+  const previews = useSelector((state: RootState) => state.ui.previews);
+
+  const [infoSonarFront, setInfoSonarFront] = useState<any>(null);
   const [infoSonarBack] = useState<any>(null);
   const [validation, setValidation] = useState("ok");
 
   const validationURL = `https://validator.w3.org/nu/?doc=${prod.front}`;
-  const sonarApiURL =
+  const sonarBadgetURL =
     sonarKey?.front &&
     `https://sonarcloud.io/api/project_badges/measure?project=${sonarKey.front}`;
   const sonarURL =
@@ -61,12 +65,49 @@ const ProjectCard = ({
     }
   }, [validationURL]);
 
+  const getSonarMeasures = useCallback(async () => {
+    const {
+      data: {
+        codeSmells,
+        coverage,
+        bugs,
+        vulnerabilities,
+        debt,
+        security_hotspots,
+      },
+    } = await axios.get(
+      `${process.env.REACT_APP_API_URL}projects/sonardata/?projectKey=${sonarKey.front}`,
+      {
+        headers: {
+          authorization: `Bearer ${process.env.REACT_APP_TEMP_JWT}`,
+        },
+      }
+    );
+    setInfoSonarFront({
+      codeSmells: +codeSmells,
+      coverage: +coverage,
+      bugs: +bugs,
+      debt: +debt,
+      security_hotspots: +security_hotspots,
+      vulnerabilities: +vulnerabilities,
+    });
+  }, [sonarKey.front]);
+
   useEffect(() => {
     getInfoRepo();
     if (prod.front) {
       getValidation();
     }
-  }, [getInfoRepo, getValidation, prod.front]);
+    if (sonarKey.front) {
+      getSonarMeasures();
+    }
+  }, [
+    getInfoRepo,
+    getSonarMeasures,
+    getValidation,
+    prod.front,
+    sonarKey.front,
+  ]);
 
   return (
     <StyledArticle backgroundColor={backgroundColor}>
@@ -150,6 +191,8 @@ const ProjectCard = ({
           {infoSonarFront && (
             <>
               <p>Code smells: {infoSonarFront.codeSmells}</p>
+              <p>Bugs: {infoSonarFront.bugs}</p>
+              <p>Debt: {infoSonarFront.debt} minutes</p>
               <p className={infoSonarFront.coverage >= 80 ? "" : "danger"}>
                 Coverage: {infoSonarFront.coverage}%
               </p>
@@ -193,7 +236,7 @@ const ProjectCard = ({
           {tutor.name.charAt(0).toUpperCase()}
         </StyledTutor>
       )}
-      {prod.front && <ProdPreview url={prod.front} />}
+      {prod.front && previews && <ProdPreview url={prod.front} />}
       {trello && (
         <StyledLogo>
           <a href={trello} target="_blank" rel="noreferrer" title="Trello">
@@ -203,7 +246,7 @@ const ProjectCard = ({
       )}
       {sonarKey?.front && (
         <a href={sonarURL} target="_blank" rel="noreferrer">
-          <img src={`${sonarApiURL}&metric=alert_status`} alt="Sonar" />
+          <img src={`${sonarBadgetURL}&metric=alert_status`} alt="Sonar" />
         </a>
       )}
     </StyledArticle>

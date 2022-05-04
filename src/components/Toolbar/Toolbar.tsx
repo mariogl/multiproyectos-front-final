@@ -1,9 +1,14 @@
 import axios from "axios";
 import { SyntheticEvent, useState } from "react";
 import { Form } from "react-bootstrap";
-import { FaRedoAlt, FaTrash } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { FaRedoAlt, FaTrash, FaEye, FaEyeSlash } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import {
+  hidePreviewsAction,
+  showPreviewsAction,
+} from "../../redux/actions/uiActionCreators";
+import { RootState } from "../../redux/reducers";
 import { deleteProjectThunk } from "../../redux/thunks/projectsThunks";
 import Loading from "../Loading/Loading";
 
@@ -49,8 +54,8 @@ interface ToolbarProps {
 }
 
 const Toolbar = ({ id, ids }: ToolbarProps): JSX.Element => {
+  const previews = useSelector((state: RootState) => state.ui.previews);
   const [loadingPull, setLoadingPull] = useState(false);
-
   const [runInParallel, setRunInParallel] = useState(false);
 
   const dispatch = useDispatch();
@@ -88,8 +93,22 @@ const Toolbar = ({ id, ids }: ToolbarProps): JSX.Element => {
     dispatch(deleteProjectThunk(id as string));
   };
 
+  const onTogglePreviews = (event: SyntheticEvent) => {
+    event.preventDefault();
+    dispatch(previews ? hidePreviewsAction() : showPreviewsAction());
+  };
+
   return (
     <StyledToolbar id={id}>
+      {!id && (
+        <a
+          href="show/hide previews"
+          title="Show/Hide previews"
+          onClick={onTogglePreviews}
+        >
+          {previews ? <FaEyeSlash /> : <FaEye />}
+        </a>
+      )}
       {loadingPull ? (
         <Loading />
       ) : (

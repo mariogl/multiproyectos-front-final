@@ -3,6 +3,8 @@ const actionTypes = {
   loadProjects: "load-projects",
   filter: "filter-items",
   delete: "delete-item",
+  showPreviews: "show-previews",
+  hidePreviews: "hide-previews",
 };
 
 export default actionTypes;
