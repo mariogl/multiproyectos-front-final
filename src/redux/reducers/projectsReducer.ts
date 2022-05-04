@@ -34,7 +34,7 @@ const projectsReducer = (
       };
       break;
     default:
-      newProjects = projects;
+      newProjects = { ...projects };
   }
 
   return newProjects;

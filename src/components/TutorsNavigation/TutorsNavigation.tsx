@@ -1,54 +1,34 @@
 import React from "react";
-import { Button, ButtonGroup } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
 import { filterProjectsAction } from "../../redux/actions/projectsActionCreators";
 import { RootState } from "../../redux/reducers";
-
-const StyledButtonGroup = styled(ButtonGroup)`
-  margin-bottom: 20px;
-  button {
-    background-color: #444;
-    border-color: #444;
-    &.active {
-      background-color: #111;
-      border-color: #111;
-    }
-  }
-`;
+import StyledButtonGroup from "../StyledButtonGroup/StyledButtonGroup";
 
 const TutorsNavigation = (): JSX.Element => {
   const dispatch = useDispatch();
   const actualFilter = useSelector(
     (state: RootState) => state.projects.filterBy
   );
+  const tutors = useSelector((state: RootState) => state.tutors);
 
-  const filter = (tutorName: string, event: React.MouseEvent) => {
+  const filter = (id: string, event: React.MouseEvent) => {
     event.preventDefault();
-    dispatch(filterProjectsAction(tutorName));
+    dispatch(filterProjectsAction(id));
   };
 
   return (
     <nav>
       <StyledButtonGroup size="sm">
-        <Button
-          onClick={(event) => filter("Sílvia", event)}
-          active={actualFilter === "Sílvia"}
-        >
-          Sílvia
-        </Button>
-        <Button
-          onClick={(event) => filter("David", event)}
-          active={actualFilter === "David"}
-        >
-          David
-        </Button>
-        <Button
-          onClick={(event) => filter("Alejandro", event)}
-          active={actualFilter === "Alejandro"}
-        >
-          Alejandro
-        </Button>
+        {tutors.map(({ id, name }) => (
+          <Button
+            key={id}
+            onClick={(event) => filter(id, event)}
+            active={actualFilter === name}
+          >
+            {name}
+          </Button>
+        ))}
         <Button
           onClick={(event) => filter("", event)}
           active={actualFilter === ""}

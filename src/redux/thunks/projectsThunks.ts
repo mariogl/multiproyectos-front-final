@@ -19,6 +19,19 @@ export const loadProjectsThunk =
     dispatch(loadProjectsAction(data.projects));
   };
 
+export const loadProjectsFilteredThunk =
+  (challengeId: string, tutorId: string) =>
+  async (dispatch: Dispatch<LoadProjectsAction>) => {
+    const apiUrl = `${process.env.REACT_APP_API_URL}projects/${challengeId}/filter/tutor/${tutorId}`;
+    const { data } = await axios.get<{ projects: Project[] }>(apiUrl, {
+      headers: {
+        authorization: `Bearer ${process.env.REACT_APP_TEMP_JWT}`,
+      },
+    });
+
+    dispatch(loadProjectsAction(data.projects));
+  };
+
 export const deleteProjectThunk =
   (id: string) => async (dispatch: Dispatch<DeleteProjectAction>) => {
     return new Promise<void>(async (resolve, reject) => {

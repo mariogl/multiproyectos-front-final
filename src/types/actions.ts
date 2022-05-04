@@ -1,5 +1,6 @@
 import Challenge from "./challenges";
 import Project from "./project";
+import Tutor from "./tutor";
 
 export interface Action {
   type: string;
@@ -19,4 +20,8 @@ export interface FilterProjectsAction extends Action {
 
 export interface DeleteProjectAction extends Action {
   id: string;
+}
+
+export interface LoadTutorsAction extends Action {
+  tutors: Tutor[];
 }
