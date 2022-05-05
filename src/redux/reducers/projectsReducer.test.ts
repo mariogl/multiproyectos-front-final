@@ -7,7 +7,11 @@ import projectsReducer, { ProjectsState } from "./projectsReducer";
 describe("Given a projectsReducer function", () => {
   describe("When it receives a load action with a list of projects", () => {
     test("Then it should return the received list of projects", () => {
-      const initialProjects: ProjectsState = { list: [], filterBy: "" };
+      const initialProjects: ProjectsState = {
+        list: [],
+        filterByTutor: "",
+        filterByCoverage: "",
+      };
       const newProjects: Project[] = randomProjects();
       const action: LoadProjectsAction = {
         type: actionTypes.loadProjects,
@@ -24,7 +28,8 @@ describe("Given a projectsReducer function", () => {
     test("Then it should return the previous list of projects", () => {
       const initialProjects: ProjectsState = {
         list: randomProjects(),
-        filterBy: "",
+        filterByTutor: "",
+        filterByCoverage: "",
       };
       const action: Action = {
         type: "test",

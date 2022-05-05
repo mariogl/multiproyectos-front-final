@@ -1,3 +1,5 @@
+import SonarInfo from "./sonarInfo";
+
 interface Project {
   id: string;
   challenge: string;
@@ -8,6 +10,7 @@ interface Project {
     front: string;
     back: string;
   };
+  sonarInfo: SonarInfo;
   tutor: {
     id: string;
     name: string;

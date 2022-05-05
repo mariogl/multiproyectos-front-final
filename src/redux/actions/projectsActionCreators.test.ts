@@ -16,6 +16,14 @@ describe("Given a loadProjectsAction function", () => {
             back: "",
             front: "",
           },
+          sonarInfo: {
+            coverage: 0,
+            bugs: 0,
+            securityHotspots: 0,
+            codeSmells: 0,
+            debt: 0,
+            vulnerabilities: 0,
+          },
           prod: {
             back: "",
             front: "",
@@ -35,6 +43,14 @@ describe("Given a loadProjectsAction function", () => {
           repo: {
             back: "",
             front: "",
+          },
+          sonarInfo: {
+            coverage: 0,
+            bugs: 0,
+            securityHotspots: 0,
+            codeSmells: 0,
+            debt: 0,
+            vulnerabilities: 0,
           },
           prod: {
             back: "",

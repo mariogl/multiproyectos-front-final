@@ -1,5 +1,6 @@
 import Challenge from "./challenges";
 import Project from "./project";
+import SonarInfo from "./sonarInfo";
 import Tutor from "./tutor";
 
 export interface Action {
@@ -22,6 +23,10 @@ export interface DeleteProjectAction extends Action {
   id: string;
 }
 
+export interface SetSonarInfoAction extends Action {
+  id: string;
+  sonarInfo: SonarInfo;
+}
 export interface LoadTutorsAction extends Action {
   tutors: Tutor[];
 }

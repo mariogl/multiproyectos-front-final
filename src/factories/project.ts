@@ -13,6 +13,14 @@ const getProject = (blank = false): Project => ({
     front: blank ? "" : faker.name.firstName(),
     back: blank ? "" : faker.name.firstName(),
   },
+  sonarInfo: {
+    coverage: blank ? 0 : faker.datatype.number(),
+    bugs: blank ? 0 : faker.datatype.number(),
+    codeSmells: blank ? 0 : faker.datatype.number(),
+    debt: blank ? 0 : faker.datatype.number(),
+    securityHotspots: blank ? 0 : faker.datatype.number(),
+    vulnerabilities: blank ? 0 : faker.datatype.number(),
+  },
   repo: {
     back: blank ? "" : faker.internet.url(),
     front: blank ? "" : faker.internet.url(),

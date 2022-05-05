@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -21,33 +21,33 @@ const StyledBar = styled.div`
 
 const ProjectsListPage = (): JSX.Element => {
   const { challengeId } = useParams();
-
   const dispatch = useDispatch();
-  const { list: projects, filterBy }: ProjectsState = useSelector(
+  const { list: projects, filterByTutor }: ProjectsState = useSelector(
     (state: RootState) => state.projects
   );
+
   const timer = useRef<number>();
 
-  useEffect(() => {
-    if (filterBy) {
-      dispatch(loadProjectsFilteredThunk(challengeId as string, filterBy));
+  const loadProjects = useCallback(() => {
+    if (filterByTutor) {
+      dispatch(loadProjectsFilteredThunk(challengeId as string, filterByTutor));
     } else {
       dispatch(loadProjectsThunk(challengeId as string));
     }
-  }, [challengeId, dispatch, filterBy]);
+  }, [challengeId, dispatch, filterByTutor]);
 
   useEffect(() => {
     dispatch(loadTutorsThunk());
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(loadProjectsThunk(challengeId as string));
+    loadProjects();
     timer.current = window.setInterval(
-      () => dispatch(loadProjectsThunk(challengeId as string)),
+      () => loadProjects(),
       +(process.env.REACT_APP_RELOAD_TIME as string)
     );
     return () => clearInterval(timer.current);
-  }, [challengeId, dispatch]);
+  }, [challengeId, dispatch, loadProjects]);
 
   return (
     <>

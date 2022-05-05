@@ -9,9 +9,14 @@ export const StyledArticle = styled.article<{
   padding: 10px;
   font-size: 12px;
   position: relative;
+  .coverage {
+    display: inline-block;
+  }
   .danger {
     background-color: red;
-    display: inline-block;
+  }
+  .good {
+    background-color: green;
   }
   a {
     color: inherit;

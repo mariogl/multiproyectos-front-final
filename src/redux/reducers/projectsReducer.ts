@@ -8,13 +8,15 @@ import actionTypes from "../actions/actionTypes";
 
 export interface ProjectsState {
   list: Project[];
-  filterBy: string;
+  filterByTutor: string;
+  filterByCoverage: string;
 }
 
 const projectsReducer = (
   projects: ProjectsState = {
     list: [],
-    filterBy: "",
+    filterByTutor: "",
+    filterByCoverage: "",
   },
   action: Action = { type: "" }
 ): ProjectsState => {
@@ -27,10 +29,16 @@ const projectsReducer = (
         list: [...(action as LoadProjectsAction).projects],
       };
       break;
-    case actionTypes.filter:
+    case actionTypes.filterByTutor:
       newProjects = {
         ...projects,
-        filterBy: (action as FilterProjectsAction).filter,
+        filterByTutor: (action as FilterProjectsAction).filter,
+      };
+      break;
+    case actionTypes.filterByCoverage:
+      newProjects = {
+        ...projects,
+        filterByCoverage: (action as FilterProjectsAction).filter,
       };
       break;
     default:

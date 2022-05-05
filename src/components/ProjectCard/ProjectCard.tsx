@@ -28,13 +28,21 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = ({
-  project: { name, repo, prod, tutor, student, trello, sonarKey },
+  project: {
+    id,
+    name,
+    repo,
+    prod,
+    tutor,
+    student,
+    trello,
+    sonarKey,
+    sonarInfo,
+  },
   backgroundColor,
 }: ProjectCardProps): JSX.Element => {
   const previews = useSelector((state: RootState) => state.ui.previews);
 
-  const [infoSonarFront, setInfoSonarFront] = useState<any>(null);
-  const [infoSonarBack] = useState<any>(null);
   const [validation, setValidation] = useState("ok");
 
   const validationURL = `https://validator.w3.org/nu/?doc=${prod.front}`;
@@ -66,49 +74,12 @@ const ProjectCard = ({
     }
   }, [validationURL]);
 
-  const getSonarMeasures = useCallback(async () => {
-    const {
-      data: {
-        codeSmells,
-        coverage,
-        bugs,
-        vulnerabilities,
-        debt,
-        security_hotspots,
-      },
-    } = await axios.get(
-      `${process.env.REACT_APP_API_URL}projects/sonardata/?projectKey=${sonarKey.front}`,
-      {
-        headers: {
-          authorization: `Bearer ${process.env.REACT_APP_TEMP_JWT}`,
-        },
-      }
-    );
-    setInfoSonarFront({
-      codeSmells: +codeSmells,
-      coverage: +coverage,
-      bugs: +bugs,
-      debt: +debt,
-      security_hotspots: +security_hotspots,
-      vulnerabilities: +vulnerabilities,
-    });
-  }, [sonarKey.front]);
-
   useEffect(() => {
     getInfoRepo();
     if (prod.front) {
       getValidation();
     }
-    if (sonarKey.front) {
-      getSonarMeasures();
-    }
-  }, [
-    getInfoRepo,
-    getSonarMeasures,
-    getValidation,
-    prod.front,
-    sonarKey.front,
-  ]);
+  }, [getInfoRepo, getValidation, prod.front]);
 
   return (
     <StyledArticle backgroundColor={backgroundColor}>
@@ -200,13 +171,17 @@ const ProjectCard = ({
               </a>
             </p>
           )}
-          {infoSonarFront && (
+          {sonarInfo && (
             <>
-              <p>Code smells: {infoSonarFront.codeSmells}</p>
-              <p>Bugs: {infoSonarFront.bugs}</p>
-              <p>Debt: {infoSonarFront.debt} minutes</p>
-              <p className={infoSonarFront.coverage >= 80 ? "" : "danger"}>
-                Coverage: {infoSonarFront.coverage}%
+              <p>Code smells: {sonarInfo.codeSmells}</p>
+              <p>Bugs: {sonarInfo.bugs}</p>
+              <p>Debt: {sonarInfo.debt} minutes</p>
+              <p
+                className={`coverage ${
+                  sonarInfo?.coverage >= 80 ? "good" : "danger"
+                }`}
+              >
+                Coverage: {sonarInfo?.coverage}%
               </p>
             </>
           )}
@@ -233,14 +208,6 @@ const ProjectCard = ({
               />
             )}
           </p>
-          {infoSonarBack && (
-            <>
-              <p>Code smells: {infoSonarBack.codeSmells}</p>
-              <p className={infoSonarBack.coverage >= 80 ? "" : "danger"}>
-                Coverage: {infoSonarBack.coverage}%
-              </p>
-            </>
-          )}
         </>
       )}
       {tutor && (

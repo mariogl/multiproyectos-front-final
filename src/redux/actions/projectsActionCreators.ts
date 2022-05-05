@@ -13,8 +13,17 @@ export const loadProjectsAction = (
   projects,
 });
 
-export const filterProjectsAction = (filter = ""): FilterProjectsAction => ({
-  type: actionTypes.filter,
+export const filterProjectsByTutorAction = (
+  filter = ""
+): FilterProjectsAction => ({
+  type: actionTypes.filterByTutor,
+  filter,
+});
+
+export const filterProjectsByCoverageAction = (
+  filter = ""
+): FilterProjectsAction => ({
+  type: actionTypes.filterByCoverage,
   filter,
 });
 
