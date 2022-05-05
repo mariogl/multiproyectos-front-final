@@ -25,7 +25,7 @@ describe("Given a ProjectCard component", () => {
 
       expect(name).toBeInTheDocument();
 
-      await act(() => Promise.resolve());
+      // await act(() => Promise.resolve());
     });
   });
 });

@@ -21,4 +21,16 @@ export const handlers = [
         })
       )
   ),
+  rest.get("https://validator.w3.org/nu/", (req, res, ctx) =>
+    res(
+      ctx.status(200),
+      ctx.json({
+        url: "",
+        messages: [],
+      })
+    )
+  ),
+  rest.get("https://api.github.com/repos/*", (req, res, ctx) =>
+    res(ctx.status(200))
+  ),
 ];

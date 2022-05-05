@@ -28,17 +28,7 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = ({
-  project: {
-    id,
-    name,
-    repo,
-    prod,
-    tutor,
-    student,
-    trello,
-    sonarKey,
-    sonarInfo,
-  },
+  project: { name, repo, prod, tutor, student, trello, sonarKey, sonarInfo },
   backgroundColor,
 }: ProjectCardProps): JSX.Element => {
   const previews = useSelector((state: RootState) => state.ui.previews);

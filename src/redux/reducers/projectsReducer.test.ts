@@ -44,9 +44,10 @@ describe("Given a projectsReducer function", () => {
   describe("When it receives nothing", () => {
     test("Then it should return an empty list", () => {
       const newState = projectsReducer();
-      const expectedState = {
+      const expectedState: ProjectsState = {
         list: [],
-        filterBy: "",
+        filterByTutor: "",
+        filterByCoverage: "",
       };
 
       expect(newState).toEqual(expectedState);
