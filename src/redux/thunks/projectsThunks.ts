@@ -8,8 +8,11 @@ import {
 } from "../actions/projectsActionCreators";
 
 export const loadProjectsThunk =
-  (challengeId: string) => async (dispatch: Dispatch<LoadProjectsAction>) => {
-    const apiUrl = `${process.env.REACT_APP_API_URL}projects/${challengeId}`;
+  (challengeId: string, filterByCoverage: string) =>
+  async (dispatch: Dispatch<LoadProjectsAction>) => {
+    const apiUrl = `${process.env.REACT_APP_API_URL}projects/${challengeId}${
+      filterByCoverage ? `?byCoverage=${filterByCoverage}` : ""
+    }`;
     const { data } = await axios.get<{ projects: Project[] }>(apiUrl, {
       headers: {
         authorization: `Bearer ${process.env.REACT_APP_TEMP_JWT}`,
@@ -20,9 +23,13 @@ export const loadProjectsThunk =
   };
 
 export const loadProjectsFilteredThunk =
-  (challengeId: string, tutorId: string) =>
+  (challengeId: string, tutorId: string, filterByCoverage: string) =>
   async (dispatch: Dispatch<LoadProjectsAction>) => {
-    const apiUrl = `${process.env.REACT_APP_API_URL}projects/${challengeId}/filter/tutor/${tutorId}`;
+    const apiUrl = `${
+      process.env.REACT_APP_API_URL
+    }projects/${challengeId}/filter/tutor/${tutorId}${
+      filterByCoverage ? `?byCoverage=${filterByCoverage}` : ""
+    }`;
     const { data } = await axios.get<{ projects: Project[] }>(apiUrl, {
       headers: {
         authorization: `Bearer ${process.env.REACT_APP_TEMP_JWT}`,

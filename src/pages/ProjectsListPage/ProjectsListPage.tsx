@@ -22,19 +22,27 @@ const StyledBar = styled.div`
 const ProjectsListPage = (): JSX.Element => {
   const { challengeId } = useParams();
   const dispatch = useDispatch();
-  const { list: projects, filterByTutor }: ProjectsState = useSelector(
-    (state: RootState) => state.projects
-  );
+  const {
+    list: projects,
+    filterByTutor,
+    filterByCoverage,
+  }: ProjectsState = useSelector((state: RootState) => state.projects);
 
   const timer = useRef<number>();
 
   const loadProjects = useCallback(() => {
     if (filterByTutor) {
-      dispatch(loadProjectsFilteredThunk(challengeId as string, filterByTutor));
+      dispatch(
+        loadProjectsFilteredThunk(
+          challengeId as string,
+          filterByTutor,
+          filterByCoverage
+        )
+      );
     } else {
-      dispatch(loadProjectsThunk(challengeId as string));
+      dispatch(loadProjectsThunk(challengeId as string, filterByCoverage));
     }
-  }, [challengeId, dispatch, filterByTutor]);
+  }, [challengeId, dispatch, filterByTutor, filterByCoverage]);
 
   useEffect(() => {
     dispatch(loadTutorsThunk());

@@ -13,7 +13,7 @@ describe("Given a loadProjectsThunk function", () => {
 
       axios.get = jest.fn().mockResolvedValue({ data: { projects } });
 
-      const actualThunk = loadProjectsThunk("");
+      const actualThunk = loadProjectsThunk("", "");
       await actualThunk(dispatch);
 
       expect(dispatch).toHaveBeenCalled();
