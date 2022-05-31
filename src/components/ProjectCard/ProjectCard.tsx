@@ -36,12 +36,18 @@ const ProjectCard = ({
   const [validation, setValidation] = useState("ok");
 
   const validationURL = `https://validator.w3.org/nu/?doc=${prod.front}`;
-  const sonarBadgetURL =
+  const sonarBadgetURLfront =
     sonarKey?.front &&
     `https://sonarcloud.io/api/project_badges/measure?project=${sonarKey.front}`;
-  const sonarURL =
+  const sonarURLfront =
     sonarKey?.front &&
     `https://sonarcloud.io/project/overview?id=${sonarKey.front}`;
+  const sonarBadgetURLback =
+    sonarKey?.back &&
+    `https://sonarcloud.io/api/project_badges/measure?project=${sonarKey.back}`;
+  const sonarURLback =
+    sonarKey?.back &&
+    `https://sonarcloud.io/project/overview?id=${sonarKey.back}`;
 
   const { infoRepoBack, infoRepoFront, getInfoRepo } = useGitHub(repo);
 
@@ -97,7 +103,7 @@ const ProjectCard = ({
             </a>
             {sonarKey?.front && (
               <a
-                href={sonarURL}
+                href={sonarURLfront}
                 target="_blank"
                 rel="noreferrer"
                 title="SonarCloud"
@@ -177,10 +183,28 @@ const ProjectCard = ({
           )}
         </>
       )}
+      {sonarKey?.front && (
+        <p>
+          <a href={sonarURLfront} target="_blank" rel="noreferrer">
+            <img
+              src={`${sonarBadgetURLfront}&metric=alert_status`}
+              alt="Sonar"
+            />
+          </a>
+        </p>
+      )}
       {repo?.back && (
         <>
           <StyledSide>
             Back{" "}
+            <a
+              href={prod.back}
+              target="_blank"
+              rel="noreferrer"
+              title="Producción"
+            >
+              <UrlIcon />
+            </a>{" "}
             <a
               href={`${process.env.REACT_APP_GIT_REPO_PREFIX}${repo.back}`}
               target="_blank"
@@ -188,6 +212,17 @@ const ProjectCard = ({
             >
               <GithubLogo />
             </a>
+            {sonarKey?.back && (
+              <a
+                href={sonarURLback}
+                target="_blank"
+                rel="noreferrer"
+                title="SonarCloud"
+              >
+                {" "}
+                <SonarLogo />
+              </a>
+            )}
           </StyledSide>
           <p>
             Último commit:{" "}
@@ -198,6 +233,32 @@ const ProjectCard = ({
               />
             )}
           </p>
+          <p>
+            Última PR abierta:{" "}
+            {infoRepoBack &&
+              infoRepoBack.pullRequests &&
+              infoRepoBack.pullRequests.updated_at && (
+                <a
+                  href={infoRepoBack.pullRequests.html_url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <ReactTimeAgo
+                    date={new Date(infoRepoBack.pullRequests.updated_at)}
+                    locale="es"
+                    className={`${
+                      new Date().getTime() -
+                        new Date(
+                          infoRepoBack.pullRequests.updated_at
+                        ).getTime() >
+                      60 * 60 * 1000
+                        ? "danger"
+                        : ""
+                    }`}
+                  />
+                </a>
+              )}
+          </p>
         </>
       )}
       {tutor && (
@@ -205,10 +266,13 @@ const ProjectCard = ({
           {tutor.name.charAt(0).toUpperCase()}
         </StyledTutor>
       )}
-      {sonarKey?.front && (
+      {sonarKey?.back && (
         <p>
-          <a href={sonarURL} target="_blank" rel="noreferrer">
-            <img src={`${sonarBadgetURL}&metric=alert_status`} alt="Sonar" />
+          <a href={sonarURLback} target="_blank" rel="noreferrer">
+            <img
+              src={`${sonarBadgetURLback}&metric=alert_status`}
+              alt="Sonar"
+            />
           </a>
         </p>
       )}
