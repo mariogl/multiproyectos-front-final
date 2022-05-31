@@ -205,11 +205,7 @@ const ProjectCard = ({
             >
               <UrlIcon />
             </a>{" "}
-            <a
-              href={`${process.env.REACT_APP_GIT_REPO_PREFIX}${repo.back}`}
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href={`${repo.back}`} target="_blank" rel="noreferrer">
               <GithubLogo />
             </a>
             {sonarKey?.back && (
