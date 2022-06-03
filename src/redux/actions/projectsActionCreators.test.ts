@@ -16,7 +16,15 @@ describe("Given a loadProjectsAction function", () => {
             back: "",
             front: "",
           },
-          sonarInfo: {
+          sonarInfoFront: {
+            coverage: 0,
+            bugs: 0,
+            securityHotspots: 0,
+            codeSmells: 0,
+            debt: 0,
+            vulnerabilities: 0,
+          },
+          sonarInfoBack: {
             coverage: 0,
             bugs: 0,
             securityHotspots: 0,
@@ -44,7 +52,15 @@ describe("Given a loadProjectsAction function", () => {
             back: "",
             front: "",
           },
-          sonarInfo: {
+          sonarInfoFront: {
+            coverage: 0,
+            bugs: 0,
+            securityHotspots: 0,
+            codeSmells: 0,
+            debt: 0,
+            vulnerabilities: 0,
+          },
+          sonarInfoBack: {
             coverage: 0,
             bugs: 0,
             securityHotspots: 0,

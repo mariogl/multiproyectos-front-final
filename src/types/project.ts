@@ -10,7 +10,8 @@ interface Project {
     front: string;
     back: string;
   };
-  sonarInfo: SonarInfo;
+  sonarInfoBack: SonarInfo;
+  sonarInfoFront: SonarInfo;
   tutor: {
     id: string;
     name: string;

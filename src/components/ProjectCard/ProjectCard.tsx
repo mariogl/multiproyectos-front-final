@@ -28,7 +28,17 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = ({
-  project: { name, repo, prod, tutor, student, trello, sonarKey, sonarInfo },
+  project: {
+    name,
+    repo,
+    prod,
+    tutor,
+    student,
+    trello,
+    sonarKey,
+    sonarInfoFront,
+    sonarInfoBack,
+  },
   backgroundColor,
 }: ProjectCardProps): JSX.Element => {
   const previews = useSelector((state: RootState) => state.ui.previews);
@@ -167,17 +177,17 @@ const ProjectCard = ({
               </a>
             </p>
           )}
-          {sonarInfo && (
+          {sonarInfoFront && (
             <>
-              <p>Code smells: {sonarInfo.codeSmells}</p>
-              <p>Bugs: {sonarInfo.bugs}</p>
-              <p>Debt: {sonarInfo.debt} minutes</p>
+              <p>Code smells: {sonarInfoFront.codeSmells}</p>
+              <p>Bugs: {sonarInfoFront.bugs}</p>
+              <p>Debt: {sonarInfoFront.debt} minutes</p>
               <p
                 className={`coverage ${
-                  sonarInfo?.coverage >= 80 ? "good" : "danger"
+                  sonarInfoFront?.coverage >= 80 ? "good" : "danger"
                 }`}
               >
-                Coverage: {sonarInfo?.coverage}%
+                Coverage: {sonarInfoFront?.coverage}%
               </p>
             </>
           )}
@@ -261,6 +271,20 @@ const ProjectCard = ({
         <StyledTutor backgroundColor={backgroundColor} title={tutor.name}>
           {tutor.name.charAt(0).toUpperCase()}
         </StyledTutor>
+      )}
+      {sonarInfoBack && (
+        <>
+          <p>Code smells: {sonarInfoBack.codeSmells}</p>
+          <p>Bugs: {sonarInfoBack.bugs}</p>
+          <p>Debt: {sonarInfoBack.debt} minutes</p>
+          <p
+            className={`coverage ${
+              sonarInfoBack?.coverage >= 80 ? "good" : "danger"
+            }`}
+          >
+            Coverage: {sonarInfoBack?.coverage}%
+          </p>
+        </>
       )}
       {sonarKey?.back && (
         <p>
