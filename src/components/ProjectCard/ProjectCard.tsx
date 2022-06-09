@@ -1,15 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import ReactTimeAgo from "react-time-ago";
 import Project from "../../types/project";
 import { ReactComponent as TrelloLogo } from "../../img/trello-icon.svg";
-import { ReactComponent as GithubLogo } from "../../img/github-icon.svg";
-import { ReactComponent as UrlIcon } from "../../img/url.svg";
-import { ReactComponent as SonarLogo } from "../../img/sonar-icon.svg";
 import {
   StyledArticle,
   StyledLogo,
-  StyledSide,
-  StyledSideHeading,
   StyledSides,
   StyledStudent,
   StyledTitle,
@@ -21,6 +15,7 @@ import useGitHub from "../../hooks/useGitHub";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/reducers";
 import sonarURLs from "../../utils/sonarURLs";
+import ProjectCardSide from "../ProjectCardSide/ProjectCardSide";
 
 interface ProjectCardProps {
   project: Project;
@@ -42,6 +37,7 @@ const ProjectCard = ({
     sonarInfoFront,
     sonarInfoBack,
   },
+  project,
   backgroundColor,
 }: ProjectCardProps): JSX.Element => {
   const previews = useSelector((state: RootState) => state.ui.previews);
@@ -91,204 +87,26 @@ const ProjectCard = ({
       <StyledTitle>{name} </StyledTitle>
       <StyledSides>
         {repo?.front && (
-          <StyledSide>
-            <StyledSideHeading>
-              Front{" "}
-              <a
-                href={prod.front}
-                target="_blank"
-                rel="noreferrer"
-                title="Producción"
-              >
-                <UrlIcon />
-              </a>{" "}
-              <a
-                href={repo.front}
-                target="_blank"
-                rel="noreferrer"
-                title="GitHub"
-              >
-                <GithubLogo />
-              </a>
-              {sonarKey?.front && (
-                <a
-                  href={sonarURLfront}
-                  target="_blank"
-                  rel="noreferrer"
-                  title="SonarCloud"
-                >
-                  {" "}
-                  <SonarLogo />
-                </a>
-              )}
-            </StyledSideHeading>
-            <p>
-              Último commit:{" "}
-              {infoRepoFront && infoRepoFront.commits && (
-                <ReactTimeAgo
-                  date={new Date(infoRepoFront.commits.commit.author?.date)}
-                  locale="es"
-                />
-              )}
-            </p>
-            <p>
-              Última PR abierta:{" "}
-              {infoRepoFront &&
-                infoRepoFront.pullRequests &&
-                infoRepoFront.pullRequests.updated_at && (
-                  <a
-                    href={infoRepoFront.pullRequests.html_url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <ReactTimeAgo
-                      date={new Date(infoRepoFront.pullRequests.updated_at)}
-                      locale="es"
-                      className={`${
-                        new Date().getTime() -
-                          new Date(
-                            infoRepoFront.pullRequests.updated_at
-                          ).getTime() >
-                        60 * 60 * 1000
-                          ? "danger"
-                          : ""
-                      }`}
-                    />
-                  </a>
-                )}
-            </p>
-            {prod.front && (
-              <p>
-                HTML validation:{" "}
-                <a
-                  href={validationURL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={
-                    validation === "errors"
-                      ? "validation-errors"
-                      : validation === "warnings"
-                      ? "validation-warnings"
-                      : ""
-                  }
-                >
-                  {validation}
-                </a>
-              </p>
-            )}
-            {sonarInfoFront && (
-              <>
-                <p>Code smells: {sonarInfoFront.codeSmells}</p>
-                <p>Bugs: {sonarInfoFront.bugs}</p>
-                <p>Debt: {sonarInfoFront.debt} minutes</p>
-                <p
-                  className={`coverage ${
-                    sonarInfoFront?.coverage >= 80 ? "good" : "danger"
-                  }`}
-                >
-                  Coverage: {sonarInfoFront?.coverage}%
-                </p>
-              </>
-            )}
-            {sonarKey?.front && (
-              <p>
-                <a href={sonarURLfront} target="_blank" rel="noreferrer">
-                  <img
-                    src={`${sonarBadgetURLfront}&metric=alert_status`}
-                    alt="Sonar"
-                  />
-                </a>
-              </p>
-            )}
-          </StyledSide>
+          <ProjectCardSide
+            side="front"
+            project={project}
+            infoRepo={infoRepoFront}
+            sonarInfo={sonarInfoFront}
+            sonarURL={sonarURLfront}
+            sonarBadgetURL={sonarBadgetURLfront}
+            validation={validation}
+          />
         )}
         {repo?.back && (
-          <StyledSide>
-            <StyledSideHeading>
-              Back{" "}
-              <a
-                href={prod.back}
-                target="_blank"
-                rel="noreferrer"
-                title="Producción"
-              >
-                <UrlIcon />
-              </a>{" "}
-              <a href={`${repo.back}`} target="_blank" rel="noreferrer">
-                <GithubLogo />
-              </a>
-              {sonarKey?.back && (
-                <a
-                  href={sonarURLback}
-                  target="_blank"
-                  rel="noreferrer"
-                  title="SonarCloud"
-                >
-                  {" "}
-                  <SonarLogo />
-                </a>
-              )}
-            </StyledSideHeading>
-            <p>
-              Último commit:{" "}
-              {infoRepoBack && (
-                <ReactTimeAgo
-                  date={new Date(infoRepoBack.commits.commit.author?.date)}
-                  locale="es"
-                />
-              )}
-            </p>
-            <p>
-              Última PR abierta:{" "}
-              {infoRepoBack &&
-                infoRepoBack.pullRequests &&
-                infoRepoBack.pullRequests.updated_at && (
-                  <a
-                    href={infoRepoBack.pullRequests.html_url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <ReactTimeAgo
-                      date={new Date(infoRepoBack.pullRequests.updated_at)}
-                      locale="es"
-                      className={`${
-                        new Date().getTime() -
-                          new Date(
-                            infoRepoBack.pullRequests.updated_at
-                          ).getTime() >
-                        60 * 60 * 1000
-                          ? "danger"
-                          : ""
-                      }`}
-                    />
-                  </a>
-                )}
-            </p>
-            {sonarInfoBack && (
-              <>
-                <p>Code smells: {sonarInfoBack.codeSmells}</p>
-                <p>Bugs: {sonarInfoBack.bugs}</p>
-                <p>Debt: {sonarInfoBack.debt} minutes</p>
-                <p
-                  className={`coverage ${
-                    sonarInfoBack?.coverage >= 80 ? "good" : "danger"
-                  }`}
-                >
-                  Coverage: {sonarInfoBack?.coverage}%
-                </p>
-              </>
-            )}
-            {sonarKey?.back && (
-              <p>
-                <a href={sonarURLback} target="_blank" rel="noreferrer">
-                  <img
-                    src={`${sonarBadgetURLback}&metric=alert_status`}
-                    alt="Sonar"
-                  />
-                </a>
-              </p>
-            )}
-          </StyledSide>
+          <ProjectCardSide
+            side="back"
+            project={project}
+            infoRepo={infoRepoBack}
+            sonarInfo={sonarInfoBack}
+            sonarURL={sonarURLback}
+            sonarBadgetURL={sonarBadgetURLback}
+            validation={validation}
+          />
         )}
       </StyledSides>
       {tutor && (

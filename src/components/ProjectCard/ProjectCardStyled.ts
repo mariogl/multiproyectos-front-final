@@ -28,10 +28,20 @@ export const StyledArticle = styled.article<{
     height: 20px;
     width: auto;
     path {
-      fill: ${(props) =>
-        props.backgroundColor.theme === "dark"
-          ? "#fff !important"
-          : "#000 !important"};
+      fill: inherit;
+    }
+    &.warnings {
+      fill: orange;
+    }
+    &.errors {
+      fill: red;
+    }
+    &.subicon {
+      position: relative;
+      left: -10px;
+      top: 10px;
+      width: 15px;
+      height: auto;
     }
   }
   .validation-errors {
@@ -58,15 +68,38 @@ export const StyledTitle = styled.h3`
 
 export const StyledSides = styled.div`
   display: flex;
+  justify-content: space-between;
   margin-top: 20px;
 `;
 
 export const StyledSide = styled.div`
-  flex: 1;
+  width: 49%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid #0002;
 `;
 
+export const StyledDataPills = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const StyledDataPill = styled.div`
+  width: 49%;
+  padding: 10px;
+  background-color: #0002;
+  border-radius: 10px;
+`;
+
+export const StyledSideHeader = styled.header`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const StyledSideIcons = styled.div``;
+
 export const StyledSideHeading = styled.h4`
-  font-size: 1.2em;
+  font-size: 1.4em;
 `;
 
 export const StyledTutor = styled.span<{

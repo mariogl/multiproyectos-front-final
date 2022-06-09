@@ -48,13 +48,7 @@ const ProjectsList = ({ projects }: ProjectsListProps): JSX.Element => {
       <p>{projects.length} proyectos</p>
       <Row as="ul" className="projects-list list-unstyled">
         {projects.map((project: Project, i: number) => (
-          <Col
-            as="li"
-            xs={12}
-            md={4}
-            key={project.id}
-            className="container-card"
-          >
+          <Col as="li" xs={12} key={project.id} className="container-card">
             <ProjectCard project={project} backgroundColor={colors[i]} />
           </Col>
         ))}
