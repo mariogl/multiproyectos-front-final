@@ -9,6 +9,8 @@ import {
   StyledArticle,
   StyledLogo,
   StyledSide,
+  StyledSideHeading,
+  StyledSides,
   StyledStudent,
   StyledTitle,
   StyledTutor,
@@ -18,6 +20,7 @@ import axios from "axios";
 import useGitHub from "../../hooks/useGitHub";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/reducers";
+import sonarURLs from "../../utils/sonarURLs";
 
 interface ProjectCardProps {
   project: Project;
@@ -46,18 +49,13 @@ const ProjectCard = ({
   const [validation, setValidation] = useState("ok");
 
   const validationURL = `https://validator.w3.org/nu/?doc=${prod.front}`;
-  const sonarBadgetURLfront =
-    sonarKey?.front &&
-    `https://sonarcloud.io/api/project_badges/measure?project=${sonarKey.front}`;
-  const sonarURLfront =
-    sonarKey?.front &&
-    `https://sonarcloud.io/project/overview?id=${sonarKey.front}`;
-  const sonarBadgetURLback =
-    sonarKey?.back &&
-    `https://sonarcloud.io/api/project_badges/measure?project=${sonarKey.back}`;
-  const sonarURLback =
-    sonarKey?.back &&
-    `https://sonarcloud.io/project/overview?id=${sonarKey.back}`;
+
+  const {
+    sonarURLfront,
+    sonarURLback,
+    sonarBadgetURLfront,
+    sonarBadgetURLback,
+  } = sonarURLs(sonarKey);
 
   const { infoRepoBack, infoRepoFront, getInfoRepo } = useGitHub(repo);
 
@@ -91,211 +89,214 @@ const ProjectCard = ({
     <StyledArticle backgroundColor={backgroundColor}>
       <StyledStudent>{student}</StyledStudent>
       <StyledTitle>{name} </StyledTitle>
-      {repo?.front && (
-        <>
+      <StyledSides>
+        {repo?.front && (
           <StyledSide>
-            Front{" "}
-            <a
-              href={prod.front}
-              target="_blank"
-              rel="noreferrer"
-              title="Producción"
-            >
-              <UrlIcon />
-            </a>{" "}
-            <a
-              href={repo.front}
-              target="_blank"
-              rel="noreferrer"
-              title="GitHub"
-            >
-              <GithubLogo />
-            </a>
-            {sonarKey?.front && (
+            <StyledSideHeading>
+              Front{" "}
               <a
-                href={sonarURLfront}
+                href={prod.front}
                 target="_blank"
                 rel="noreferrer"
-                title="SonarCloud"
+                title="Producción"
               >
-                {" "}
-                <SonarLogo />
+                <UrlIcon />
+              </a>{" "}
+              <a
+                href={repo.front}
+                target="_blank"
+                rel="noreferrer"
+                title="GitHub"
+              >
+                <GithubLogo />
               </a>
-            )}
-          </StyledSide>
-          <p>
-            Último commit:{" "}
-            {infoRepoFront && infoRepoFront.commits && (
-              <ReactTimeAgo
-                date={new Date(infoRepoFront.commits.commit.author?.date)}
-                locale="es"
-              />
-            )}
-          </p>
-          <p>
-            Última PR abierta:{" "}
-            {infoRepoFront &&
-              infoRepoFront.pullRequests &&
-              infoRepoFront.pullRequests.updated_at && (
+              {sonarKey?.front && (
                 <a
-                  href={infoRepoFront.pullRequests.html_url}
+                  href={sonarURLfront}
                   target="_blank"
                   rel="noreferrer"
+                  title="SonarCloud"
                 >
-                  <ReactTimeAgo
-                    date={new Date(infoRepoFront.pullRequests.updated_at)}
-                    locale="es"
-                    className={`${
-                      new Date().getTime() -
-                        new Date(
-                          infoRepoFront.pullRequests.updated_at
-                        ).getTime() >
-                      60 * 60 * 1000
-                        ? "danger"
-                        : ""
-                    }`}
-                  />
+                  {" "}
+                  <SonarLogo />
                 </a>
               )}
-          </p>
-          {prod.front && (
+            </StyledSideHeading>
             <p>
-              HTML validation:{" "}
-              <a
-                href={validationURL}
-                target="_blank"
-                rel="noreferrer"
-                className={
-                  validation === "errors"
-                    ? "validation-errors"
-                    : validation === "warnings"
-                    ? "validation-warnings"
-                    : ""
-                }
-              >
-                {validation}
-              </a>
+              Último commit:{" "}
+              {infoRepoFront && infoRepoFront.commits && (
+                <ReactTimeAgo
+                  date={new Date(infoRepoFront.commits.commit.author?.date)}
+                  locale="es"
+                />
+              )}
             </p>
-          )}
-          {sonarInfoFront && (
-            <>
-              <p>Code smells: {sonarInfoFront.codeSmells}</p>
-              <p>Bugs: {sonarInfoFront.bugs}</p>
-              <p>Debt: {sonarInfoFront.debt} minutes</p>
-              <p
-                className={`coverage ${
-                  sonarInfoFront?.coverage >= 80 ? "good" : "danger"
-                }`}
-              >
-                Coverage: {sonarInfoFront?.coverage}%
-              </p>
-            </>
-          )}
-        </>
-      )}
-      {sonarKey?.front && (
-        <p>
-          <a href={sonarURLfront} target="_blank" rel="noreferrer">
-            <img
-              src={`${sonarBadgetURLfront}&metric=alert_status`}
-              alt="Sonar"
-            />
-          </a>
-        </p>
-      )}
-      {repo?.back && (
-        <>
-          <StyledSide>
-            Back{" "}
-            <a
-              href={prod.back}
-              target="_blank"
-              rel="noreferrer"
-              title="Producción"
-            >
-              <UrlIcon />
-            </a>{" "}
-            <a href={`${repo.back}`} target="_blank" rel="noreferrer">
-              <GithubLogo />
-            </a>
-            {sonarKey?.back && (
-              <a
-                href={sonarURLback}
-                target="_blank"
-                rel="noreferrer"
-                title="SonarCloud"
-              >
-                {" "}
-                <SonarLogo />
-              </a>
-            )}
-          </StyledSide>
-          <p>
-            Último commit:{" "}
-            {infoRepoBack && (
-              <ReactTimeAgo
-                date={new Date(infoRepoBack.commits.commit.author?.date)}
-                locale="es"
-              />
-            )}
-          </p>
-          <p>
-            Última PR abierta:{" "}
-            {infoRepoBack &&
-              infoRepoBack.pullRequests &&
-              infoRepoBack.pullRequests.updated_at && (
+            <p>
+              Última PR abierta:{" "}
+              {infoRepoFront &&
+                infoRepoFront.pullRequests &&
+                infoRepoFront.pullRequests.updated_at && (
+                  <a
+                    href={infoRepoFront.pullRequests.html_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <ReactTimeAgo
+                      date={new Date(infoRepoFront.pullRequests.updated_at)}
+                      locale="es"
+                      className={`${
+                        new Date().getTime() -
+                          new Date(
+                            infoRepoFront.pullRequests.updated_at
+                          ).getTime() >
+                        60 * 60 * 1000
+                          ? "danger"
+                          : ""
+                      }`}
+                    />
+                  </a>
+                )}
+            </p>
+            {prod.front && (
+              <p>
+                HTML validation:{" "}
                 <a
-                  href={infoRepoBack.pullRequests.html_url}
+                  href={validationURL}
                   target="_blank"
                   rel="noreferrer"
+                  className={
+                    validation === "errors"
+                      ? "validation-errors"
+                      : validation === "warnings"
+                      ? "validation-warnings"
+                      : ""
+                  }
                 >
-                  <ReactTimeAgo
-                    date={new Date(infoRepoBack.pullRequests.updated_at)}
-                    locale="es"
-                    className={`${
-                      new Date().getTime() -
-                        new Date(
-                          infoRepoBack.pullRequests.updated_at
-                        ).getTime() >
-                      60 * 60 * 1000
-                        ? "danger"
-                        : ""
-                    }`}
+                  {validation}
+                </a>
+              </p>
+            )}
+            {sonarInfoFront && (
+              <>
+                <p>Code smells: {sonarInfoFront.codeSmells}</p>
+                <p>Bugs: {sonarInfoFront.bugs}</p>
+                <p>Debt: {sonarInfoFront.debt} minutes</p>
+                <p
+                  className={`coverage ${
+                    sonarInfoFront?.coverage >= 80 ? "good" : "danger"
+                  }`}
+                >
+                  Coverage: {sonarInfoFront?.coverage}%
+                </p>
+              </>
+            )}
+            {sonarKey?.front && (
+              <p>
+                <a href={sonarURLfront} target="_blank" rel="noreferrer">
+                  <img
+                    src={`${sonarBadgetURLfront}&metric=alert_status`}
+                    alt="Sonar"
                   />
                 </a>
+              </p>
+            )}
+          </StyledSide>
+        )}
+        {repo?.back && (
+          <StyledSide>
+            <StyledSideHeading>
+              Back{" "}
+              <a
+                href={prod.back}
+                target="_blank"
+                rel="noreferrer"
+                title="Producción"
+              >
+                <UrlIcon />
+              </a>{" "}
+              <a href={`${repo.back}`} target="_blank" rel="noreferrer">
+                <GithubLogo />
+              </a>
+              {sonarKey?.back && (
+                <a
+                  href={sonarURLback}
+                  target="_blank"
+                  rel="noreferrer"
+                  title="SonarCloud"
+                >
+                  {" "}
+                  <SonarLogo />
+                </a>
               )}
-          </p>
-        </>
-      )}
+            </StyledSideHeading>
+            <p>
+              Último commit:{" "}
+              {infoRepoBack && (
+                <ReactTimeAgo
+                  date={new Date(infoRepoBack.commits.commit.author?.date)}
+                  locale="es"
+                />
+              )}
+            </p>
+            <p>
+              Última PR abierta:{" "}
+              {infoRepoBack &&
+                infoRepoBack.pullRequests &&
+                infoRepoBack.pullRequests.updated_at && (
+                  <a
+                    href={infoRepoBack.pullRequests.html_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <ReactTimeAgo
+                      date={new Date(infoRepoBack.pullRequests.updated_at)}
+                      locale="es"
+                      className={`${
+                        new Date().getTime() -
+                          new Date(
+                            infoRepoBack.pullRequests.updated_at
+                          ).getTime() >
+                        60 * 60 * 1000
+                          ? "danger"
+                          : ""
+                      }`}
+                    />
+                  </a>
+                )}
+            </p>
+            {sonarInfoBack && (
+              <>
+                <p>Code smells: {sonarInfoBack.codeSmells}</p>
+                <p>Bugs: {sonarInfoBack.bugs}</p>
+                <p>Debt: {sonarInfoBack.debt} minutes</p>
+                <p
+                  className={`coverage ${
+                    sonarInfoBack?.coverage >= 80 ? "good" : "danger"
+                  }`}
+                >
+                  Coverage: {sonarInfoBack?.coverage}%
+                </p>
+              </>
+            )}
+            {sonarKey?.back && (
+              <p>
+                <a href={sonarURLback} target="_blank" rel="noreferrer">
+                  <img
+                    src={`${sonarBadgetURLback}&metric=alert_status`}
+                    alt="Sonar"
+                  />
+                </a>
+              </p>
+            )}
+          </StyledSide>
+        )}
+      </StyledSides>
       {tutor && (
         <StyledTutor backgroundColor={backgroundColor} title={tutor.name}>
           {tutor.name.charAt(0).toUpperCase()}
         </StyledTutor>
       )}
-      {sonarInfoBack && (
-        <>
-          <p>Code smells: {sonarInfoBack.codeSmells}</p>
-          <p>Bugs: {sonarInfoBack.bugs}</p>
-          <p>Debt: {sonarInfoBack.debt} minutes</p>
-          <p
-            className={`coverage ${
-              sonarInfoBack?.coverage >= 80 ? "good" : "danger"
-            }`}
-          >
-            Coverage: {sonarInfoBack?.coverage}%
-          </p>
-        </>
-      )}
-      {sonarKey?.back && (
-        <p>
-          <a href={sonarURLback} target="_blank" rel="noreferrer">
-            <img
-              src={`${sonarBadgetURLback}&metric=alert_status`}
-              alt="Sonar"
-            />
-          </a>
-        </p>
-      )}
+
       {prod.front && previews && <ProdPreview url={prod.front} />}
       {trello && (
         <StyledLogo>

@@ -51,9 +51,7 @@ const ProjectsList = ({ projects }: ProjectsListProps): JSX.Element => {
           <Col
             as="li"
             xs={12}
-            sm={6}
             md={4}
-            lg={3}
             key={project.id}
             className="container-card"
           >

@@ -56,7 +56,16 @@ export const StyledTitle = styled.h3`
   }
 `;
 
-export const StyledSide = styled.h4`
+export const StyledSides = styled.div`
+  display: flex;
+  margin-top: 20px;
+`;
+
+export const StyledSide = styled.div`
+  flex: 1;
+`;
+
+export const StyledSideHeading = styled.h4`
   font-size: 1.2em;
 `;
 
