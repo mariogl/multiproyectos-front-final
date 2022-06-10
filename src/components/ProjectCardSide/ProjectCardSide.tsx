@@ -9,6 +9,7 @@ import {
   StyledSideHeader,
   StyledSideHeading,
   StyledSideIcons,
+  StyledSingleData,
 } from "../ProjectCard/ProjectCardStyled";
 import ReactTimeAgo from "react-time-ago";
 import { FaExclamation, FaTimes } from "react-icons/fa";
@@ -76,17 +77,19 @@ const ProjectCardSide = ({
       </StyledSideHeader>
       <StyledDataPills>
         <StyledDataPill>
-          <p>
-            Último commit:{" "}
+          <StyledSingleData size="big">
+            Último commit:
+            <br />
             {infoRepo && infoRepo.commits && (
               <ReactTimeAgo
                 date={new Date(infoRepo.commits.commit.author?.date)}
                 locale="es"
               />
             )}
-          </p>
-          <p>
-            Última PR abierta:{" "}
+          </StyledSingleData>
+          <StyledSingleData size="big">
+            Última PR abierta:
+            <br />
             {infoRepo &&
               infoRepo.pullRequests &&
               infoRepo.pullRequests.updated_at && (
@@ -108,22 +111,30 @@ const ProjectCardSide = ({
                   />
                 </a>
               )}
-          </p>
+          </StyledSingleData>
         </StyledDataPill>
         {sonarInfo && (
           <StyledDataPill>
             {sonarInfo && (
               <>
-                <p>Code smells: {sonarInfo.codeSmells}</p>
-                <p>Bugs: {sonarInfo.bugs}</p>
-                <p>Debt: {sonarInfo.debt} minutes</p>
-                <p
+                <StyledSingleData>
+                  <span className="single-data">{sonarInfo.codeSmells}</span>{" "}
+                  code smells
+                </StyledSingleData>
+                <StyledSingleData>
+                  <span className="single-data">{sonarInfo.bugs}</span> bugs
+                </StyledSingleData>
+                <StyledSingleData>
+                  <span className="single-data">{sonarInfo.debt}′</span> debt
+                </StyledSingleData>
+                <StyledSingleData
                   className={`coverage ${
                     sonarInfo?.coverage >= 80 ? "good" : "danger"
                   }`}
                 >
-                  Coverage: {sonarInfo?.coverage}%
-                </p>
+                  <span className="single-data">{sonarInfo?.coverage}%</span>{" "}
+                  coverage
+                </StyledSingleData>
               </>
             )}
             {sonarKey && sonarKey[side] && (

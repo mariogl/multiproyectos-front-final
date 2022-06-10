@@ -89,6 +89,26 @@ export const StyledDataPill = styled.div`
   padding: 10px;
   background-color: #0002;
   border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+`;
+
+export const StyledSingleData = styled.div<{
+  size?: string;
+}>`
+  text-align: center;
+  padding: 10px;
+  ${(props) =>
+    props.size === "big" ? "width: 100%; font-size: 18px;" : "flex: 1;"}
+  background-color: #0002;
+  border-radius: 10px;
+  .single-data {
+    font-size: 32px;
+    font-weight: bold;
+    display: block;
+  }
 `;
 
 export const StyledSideHeader = styled.header`
