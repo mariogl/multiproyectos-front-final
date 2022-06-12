@@ -40,7 +40,7 @@ const ProjectCard = ({
   project,
   backgroundColor,
 }: ProjectCardProps): JSX.Element => {
-  const previews = useSelector((state: RootState) => state.ui.previews);
+  const { previews, compactMode } = useSelector((state: RootState) => state.ui);
 
   const [validation, setValidation] = useState("ok");
 
@@ -85,7 +85,7 @@ const ProjectCard = ({
     <StyledArticle backgroundColor={backgroundColor}>
       <StyledStudent>{student}</StyledStudent>
       <StyledTitle>{name} </StyledTitle>
-      <StyledSides>
+      <StyledSides compactMode={compactMode}>
         {repo?.front && (
           <ProjectCardSide
             side="front"

@@ -66,26 +66,34 @@ export const StyledTitle = styled.h3`
   }
 `;
 
-export const StyledSides = styled.div`
+export const StyledSides = styled.div<{
+  compactMode?: boolean;
+}>`
   display: flex;
+  flex-direction: ${(props) => (props.compactMode ? "column" : "row")};
   justify-content: space-between;
   margin-top: 20px;
 `;
 
-export const StyledSide = styled.div`
-  width: 49%;
+export const StyledSide = styled.div<{
+  compactMode?: boolean;
+}>`
   padding: 10px;
   border-radius: 10px;
   border: 2px solid #0002;
 `;
 
-export const StyledDataPills = styled.div`
+export const StyledDataPills = styled.div<{
+  compactMode?: boolean;
+}>`
   display: flex;
   justify-content: space-between;
 `;
 
-export const StyledDataPill = styled.div`
-  width: 49%;
+export const StyledDataPill = styled.div<{
+  compactMode?: boolean;
+}>`
+  width: ${(props) => (props.compactMode ? "100%" : "49%")};
   padding: 10px;
   background-color: #0002;
   border-radius: 10px;

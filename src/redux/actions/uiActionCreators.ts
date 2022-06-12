@@ -8,3 +8,7 @@ export const showPreviewsAction = (): Action => ({
 export const hidePreviewsAction = (): Action => ({
   type: actionTypes.hidePreviews,
 });
+
+export const toggleCompactView = (): Action => ({
+  type: actionTypes.toggleCompactView,
+});

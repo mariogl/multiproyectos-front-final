@@ -1,4 +1,6 @@
 import { Col, Row } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/reducers";
 import Project from "../../types/project";
 import ProjectCard from "../ProjectCard/ProjectCard";
 
@@ -43,12 +45,20 @@ interface ProjectsListProps {
 }
 
 const ProjectsList = ({ projects }: ProjectsListProps): JSX.Element => {
+  const compactMode = useSelector((state: RootState) => state.ui.compactMode);
+
   return (
     <>
       <p>{projects.length} proyectos</p>
       <Row as="ul" className="projects-list list-unstyled">
         {projects.map((project: Project, i: number) => (
-          <Col as="li" xs={12} key={project.id} className="container-card">
+          <Col
+            as="li"
+            xs={12}
+            md={compactMode ? 4 : 12}
+            key={project.id}
+            className="container-card"
+          >
             <ProjectCard project={project} backgroundColor={colors[i]} />
           </Col>
         ))}

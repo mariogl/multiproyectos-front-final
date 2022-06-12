@@ -1,12 +1,20 @@
 import axios from "axios";
 import { SyntheticEvent, useState } from "react";
 import { Form } from "react-bootstrap";
-import { FaRedoAlt, FaTrash, FaEye, FaEyeSlash } from "react-icons/fa";
+import {
+  FaRedoAlt,
+  FaTrash,
+  FaEye,
+  FaEyeSlash,
+  FaCompressArrowsAlt,
+  FaExpandArrowsAlt,
+} from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import {
   hidePreviewsAction,
   showPreviewsAction,
+  toggleCompactView,
 } from "../../redux/actions/uiActionCreators";
 import { RootState } from "../../redux/reducers";
 import { deleteProjectThunk } from "../../redux/thunks/projectsThunks";
@@ -54,7 +62,7 @@ interface ToolbarProps {
 }
 
 const Toolbar = ({ id, ids }: ToolbarProps): JSX.Element => {
-  const previews = useSelector((state: RootState) => state.ui.previews);
+  const ui = useSelector((state: RootState) => state.ui);
   const [loadingPull, setLoadingPull] = useState(false);
   const [runInParallel, setRunInParallel] = useState(false);
 
@@ -95,19 +103,33 @@ const Toolbar = ({ id, ids }: ToolbarProps): JSX.Element => {
 
   const onTogglePreviews = (event: SyntheticEvent) => {
     event.preventDefault();
-    dispatch(previews ? hidePreviewsAction() : showPreviewsAction());
+    dispatch(ui.previews ? hidePreviewsAction() : showPreviewsAction());
+  };
+
+  const onToggleCompactView = (event: SyntheticEvent) => {
+    event.preventDefault();
+    dispatch(toggleCompactView());
   };
 
   return (
     <StyledToolbar id={id}>
       {!id && (
-        <a
-          href="show/hide previews"
-          title="Show/Hide previews"
-          onClick={onTogglePreviews}
-        >
-          {previews ? <FaEyeSlash /> : <FaEye />}
-        </a>
+        <>
+          <a
+            href="show/hide previews"
+            title="Show/Hide previews"
+            onClick={onTogglePreviews}
+          >
+            {ui.previews ? <FaEyeSlash /> : <FaEye />}
+          </a>
+          <a
+            href="toggle compact view"
+            title="Toggle compact view"
+            onClick={onToggleCompactView}
+          >
+            {ui.compactMode ? <FaExpandArrowsAlt /> : <FaCompressArrowsAlt />}
+          </a>
+        </>
       )}
       {loadingPull ? (
         <Loading />

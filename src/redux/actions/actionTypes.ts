@@ -7,6 +7,7 @@ const actionTypes = {
   delete: "delete-item",
   showPreviews: "show-previews",
   hidePreviews: "hide-previews",
+  toggleCompactView: "toggle-compact-view",
 };
 
 export default actionTypes;

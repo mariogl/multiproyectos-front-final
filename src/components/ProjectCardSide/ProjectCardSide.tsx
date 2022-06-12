@@ -15,6 +15,8 @@ import ReactTimeAgo from "react-time-ago";
 import { FaExclamation, FaTimes } from "react-icons/fa";
 import Project from "../../types/project";
 import SonarInfo from "../../types/sonarInfo";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/reducers";
 
 interface ProjectCardSideProps {
   side: "back" | "front";
@@ -36,9 +38,10 @@ const ProjectCardSide = ({
   project: { prod, repo, sonarKey },
 }: ProjectCardSideProps): JSX.Element => {
   const validationURL = `https://validator.w3.org/nu/?doc=${prod[side]}`;
+  const compactMode = useSelector((state: RootState) => state.ui.compactMode);
 
   return (
-    <StyledSide>
+    <StyledSide compactMode={compactMode}>
       <StyledSideHeader>
         <StyledSideHeading>
           {`${side[0].toUpperCase()}${side.slice(1)}`}{" "}
@@ -75,9 +78,9 @@ const ProjectCardSide = ({
           {validation === "errors" && <FaTimes className="subicon errors" />}
         </StyledSideIcons>
       </StyledSideHeader>
-      <StyledDataPills>
-        <StyledDataPill>
-          <StyledSingleData size="big">
+      <StyledDataPills compactMode={compactMode}>
+        <StyledDataPill compactMode={compactMode}>
+          <StyledSingleData size={compactMode ? "" : "big"}>
             Último commit:
             <br />
             {infoRepo && infoRepo.commits && (
@@ -114,7 +117,7 @@ const ProjectCardSide = ({
           </StyledSingleData>
         </StyledDataPill>
         {sonarInfo && (
-          <StyledDataPill>
+          <StyledDataPill compactMode={compactMode}>
             {sonarInfo && (
               <>
                 <StyledSingleData>
